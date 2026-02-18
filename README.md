@@ -34,7 +34,7 @@ Chrome Web Store 심사 대기 중입니다. 아래 방법으로 직접 설치�
 
 - Chrome Extension Manifest V3
 - Supabase Edge Functions (OpenAI API 프록시)
-- OpenAI GPT-4.1 mini
+- OpenAI GPT-5 mini
 
 ## 현재 버전
 
