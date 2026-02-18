@@ -1,0 +1,17 @@
+# Supabase local config (contains project ref, not secrets)
+supabase/.branches
+supabase/.temp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Build artifacts
+*.zip
+
+# Analysis files
+chatgpt-analysis.json

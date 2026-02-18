@@ -1,0 +1,977 @@
+/* Reflow - Guide Styles v2.0 */
+/* Glassmorphism design with blue accent palette */
+
+/* ============================================================
+   CSS CUSTOM PROPERTIES
+   ============================================================ */
+
+:root {
+    --rf-bg-deep: #0b1220;
+    --rf-bg-mid: #111a2d;
+    --rf-bg-soft: #15233d;
+    --rf-glass: rgba(17, 26, 45, 0.85);
+    --rf-glass-border: rgba(173, 216, 255, 0.12);
+    --rf-glass-shine: rgba(255, 255, 255, 0.04);
+    --rf-accent: #4da3ff;
+    --rf-accent-soft: #79c0ff;
+    --rf-accent-glow: rgba(77, 163, 255, 0.18);
+    --rf-text: #eaf2ff;
+    --rf-text-muted: #a9bbd6;
+    --rf-text-dim: #6b7f99;
+    --rf-success: #4ade80;
+    --rf-error: #f87171;
+    --rf-warning: #fbbf24;
+    --rf-radius: 14px;
+    --rf-font: "Pretendard Variable", "SF Pro Text", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ============================================================
+   HIGHLIGHT OVERLAY
+   ============================================================ */
+
+#fox-pilot-highlight {
+    position: fixed;
+    z-index: 999998;
+    pointer-events: none;
+    border: 2px solid var(--rf-accent);
+    border-radius: 8px;
+    box-shadow:
+        0 0 0 4000px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(77, 163, 255, 0.4),
+        inset 0 0 12px rgba(77, 163, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+#fox-pilot-highlight.fox-pilot-highlight-active {
+    opacity: 1;
+    animation: rfPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes rfPulse {
+    0%, 100% {
+        border-color: var(--rf-accent);
+        box-shadow:
+            0 0 0 4000px rgba(0, 0, 0, 0.35),
+            0 0 16px rgba(77, 163, 255, 0.35),
+            inset 0 0 10px rgba(77, 163, 255, 0.08);
+    }
+    50% {
+        border-color: var(--rf-accent-soft);
+        box-shadow:
+            0 0 0 4000px rgba(0, 0, 0, 0.35),
+            0 0 28px rgba(77, 163, 255, 0.55),
+            inset 0 0 16px rgba(77, 163, 255, 0.15);
+    }
+}
+
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+
+#fox-pilot-tooltip {
+    position: fixed;
+    z-index: 999999;
+    background: var(--rf-glass);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    color: var(--rf-text);
+    padding: 14px 16px;
+    border-radius: var(--rf-radius);
+    font-family: var(--rf-font);
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 320px;
+    min-width: 180px;
+    border: 1px solid var(--rf-glass-border);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 var(--rf-glass-shine);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#fox-pilot-tooltip.fox-pilot-tooltip-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#fox-pilot-tooltip.fox-pilot-tooltip-interactive {
+    pointer-events: auto;
+}
+
+.fox-pilot-tooltip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.fox-pilot-tooltip-step {
+    display: inline-block;
+    background: var(--rf-accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.fox-pilot-tooltip-cancel {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--rf-text-dim);
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    padding: 0;
+    font-family: inherit;
+}
+
+.fox-pilot-tooltip-cancel:hover {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--rf-error);
+}
+
+.fox-pilot-tooltip-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--rf-text);
+    margin-bottom: 6px;
+    white-space: pre-line;
+}
+
+.fox-pilot-tooltip-hint {
+    font-size: 12px;
+    color: var(--rf-accent-soft);
+    opacity: 0.9;
+}
+
+.fox-pilot-tooltip-icon {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+/* ============================================================
+   MAIN PANEL — Glassmorphism
+   ============================================================ */
+
+#fox-pilot-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999997;
+    width: 320px;
+    background: var(--rf-glass);
+    backdrop-filter: blur(20px) saturate(145%);
+    -webkit-backdrop-filter: blur(20px) saturate(145%);
+    border-radius: 16px;
+    border: 1px solid var(--rf-glass-border);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 var(--rf-glass-shine);
+    font-family: var(--rf-font);
+    color: var(--rf-text);
+    overflow: hidden;
+    transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: rfPanelIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rfPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+#fox-pilot-panel:hover {
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 var(--rf-glass-shine);
+}
+
+#fox-pilot-panel.fox-pilot-minimized {
+    width: 160px;
+}
+
+/* Panel Header */
+.fox-pilot-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(173, 216, 255, 0.06);
+    user-select: none;
+}
+
+.fox-pilot-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.fox-pilot-logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.fox-pilot-logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--rf-text);
+    letter-spacing: -0.3px;
+}
+
+.fox-pilot-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.fox-pilot-btn-icon {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--rf-text-dim);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    line-height: 1;
+    padding: 0;
+}
+
+.fox-pilot-btn-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.fox-pilot-btn-icon:hover {
+    background: rgba(173, 216, 255, 0.08);
+    color: var(--rf-text-muted);
+}
+
+.fox-pilot-btn-close:hover {
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--rf-error);
+}
+
+/* Opacity Slider */
+.fox-pilot-opacity-slider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(173, 216, 255, 0.06);
+    animation: rfFadeIn 0.2s ease;
+}
+
+.fox-pilot-opacity-range {
+    flex: 1;
+    height: 3px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(173, 216, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.fox-pilot-opacity-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--rf-accent);
+    border: 2px solid var(--rf-bg-mid);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.fox-pilot-opacity-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.fox-pilot-opacity-range::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--rf-accent);
+    border: 2px solid var(--rf-bg-mid);
+    cursor: pointer;
+}
+
+.fox-pilot-opacity-value {
+    font-size: 11px;
+    color: var(--rf-text-dim);
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Panel Body */
+.fox-pilot-panel-body {
+    padding: 12px 14px 14px;
+}
+
+/* ============================================================
+   GOAL INPUT — Auto-expanding textarea
+   ============================================================ */
+
+.fox-pilot-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.fox-pilot-goal-input {
+    flex: 1;
+    padding: 10px 12px;
+    background: rgba(173, 216, 255, 0.05);
+    border: 1px solid rgba(173, 216, 255, 0.1);
+    border-radius: 10px;
+    color: var(--rf-text);
+    font-size: 13px;
+    font-family: var(--rf-font);
+    line-height: 1.45;
+    outline: none;
+    transition: all 0.2s ease;
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+    max-height: 120px;
+}
+
+.fox-pilot-goal-input::placeholder {
+    color: var(--rf-text-dim);
+}
+
+.fox-pilot-goal-input:focus {
+    border-color: var(--rf-accent);
+    box-shadow: 0 0 0 3px var(--rf-accent-glow);
+    background: rgba(173, 216, 255, 0.07);
+}
+
+.fox-pilot-goal-input:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.fox-pilot-input-shake {
+    animation: rfShake 0.4s ease;
+}
+
+@keyframes rfShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+}
+
+.fox-pilot-submit-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rf-accent);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.fox-pilot-submit-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.fox-pilot-submit-btn:hover {
+    background: var(--rf-accent-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(77, 163, 255, 0.3);
+}
+
+.fox-pilot-submit-btn:active {
+    transform: translateY(0);
+}
+
+/* ============================================================
+   MODE BADGE
+   ============================================================ */
+
+.fox-pilot-mode-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--rf-accent-glow);
+    color: var(--rf-accent);
+    margin-left: 8px;
+    letter-spacing: 0.3px;
+}
+
+.fox-pilot-mode-qa_text {
+    background: rgba(100, 181, 246, 0.12);
+    color: #64b5f6;
+}
+
+.fox-pilot-mode-tutorial_tour {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--rf-success);
+}
+
+.fox-pilot-mode-onboarding_explain {
+    background: rgba(192, 132, 252, 0.12);
+    color: #c084fc;
+}
+
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+
+.fox-pilot-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+    animation: rfFadeIn 0.25s ease;
+}
+
+.fox-pilot-status-dot {
+    width: 7px;
+    height: 7px;
+    min-width: 7px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+.fox-pilot-dot-thinking { background: var(--rf-warning); animation: rfDotPulse 1.2s infinite; }
+.fox-pilot-dot-action { background: var(--rf-accent); animation: rfDotPulse 1.2s infinite; }
+.fox-pilot-dot-input { background: #64b5f6; animation: rfDotPulse 1.2s infinite; }
+.fox-pilot-dot-waiting { background: #c084fc; animation: rfDotPulse 1.2s infinite; }
+.fox-pilot-dot-success { background: var(--rf-success); }
+.fox-pilot-dot-error { background: var(--rf-error); }
+.fox-pilot-dot-info { background: var(--rf-accent-soft); }
+.fox-pilot-dot-navigate { background: #fbbf24; animation: rfDotPulse 1.2s infinite; }
+
+@keyframes rfDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.fox-pilot-status-thinking {
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.fox-pilot-status-action {
+    background: rgba(77, 163, 255, 0.06);
+    border: 1px solid rgba(77, 163, 255, 0.1);
+}
+
+.fox-pilot-status-input {
+    background: rgba(100, 181, 246, 0.06);
+    border: 1px solid rgba(100, 181, 246, 0.1);
+}
+
+.fox-pilot-status-waiting {
+    background: rgba(192, 132, 252, 0.06);
+    border: 1px solid rgba(192, 132, 252, 0.1);
+}
+
+.fox-pilot-status-success {
+    background: rgba(74, 222, 128, 0.06);
+    border: 1px solid rgba(74, 222, 128, 0.1);
+}
+
+.fox-pilot-status-error {
+    background: rgba(248, 113, 113, 0.06);
+    border: 1px solid rgba(248, 113, 113, 0.1);
+}
+
+.fox-pilot-status-info {
+    background: rgba(77, 163, 255, 0.05);
+    border: 1px solid rgba(77, 163, 255, 0.08);
+}
+
+.fox-pilot-status-navigate {
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.fox-pilot-status-text {
+    font-size: 12px;
+    color: var(--rf-text-muted);
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+/* Progress Bar */
+.fox-pilot-progress {
+    height: 3px;
+    background: rgba(173, 216, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.fox-pilot-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rf-accent), var(--rf-accent-soft));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+/* ============================================================
+   CONTENT AREA
+   ============================================================ */
+
+.fox-pilot-content-area {
+    margin-top: 8px;
+}
+
+/* ============================================================
+   Q&A BUBBLE
+   ============================================================ */
+
+.fox-pilot-qa-bubble {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(77, 163, 255, 0.05);
+    border: 1px solid rgba(77, 163, 255, 0.1);
+    border-radius: 10px;
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-qa-icon {
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.fox-pilot-qa-text {
+    font-size: 12px;
+    color: var(--rf-text-muted);
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+@keyframes rfFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   TOUR CARD
+   ============================================================ */
+
+.fox-pilot-tour-summary {
+    font-size: 11px;
+    color: var(--rf-text-dim);
+    margin-bottom: 8px;
+}
+
+.fox-pilot-tour-card {
+    background: rgba(74, 222, 128, 0.04);
+    border: 1px solid rgba(74, 222, 128, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-tour-counter {
+    font-size: 10px;
+    color: var(--rf-success);
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.fox-pilot-tour-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rf-text);
+    margin-bottom: 4px;
+}
+
+.fox-pilot-tour-desc {
+    font-size: 12px;
+    color: var(--rf-text-muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+    word-break: keep-all;
+}
+
+.fox-pilot-tour-nav {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.fox-pilot-tour-btn {
+    padding: 5px 12px;
+    border: 1px solid rgba(173, 216, 255, 0.1);
+    border-radius: 7px;
+    background: rgba(173, 216, 255, 0.04);
+    color: var(--rf-text-dim);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: var(--rf-font);
+}
+
+.fox-pilot-tour-btn:hover:not(:disabled) {
+    background: rgba(173, 216, 255, 0.08);
+    color: var(--rf-text-muted);
+}
+
+.fox-pilot-tour-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.fox-pilot-tour-btn-primary {
+    background: var(--rf-accent-glow);
+    border-color: rgba(77, 163, 255, 0.2);
+    color: var(--rf-accent);
+}
+
+.fox-pilot-tour-btn-primary:hover:not(:disabled) {
+    background: rgba(77, 163, 255, 0.25);
+    color: var(--rf-accent-soft);
+}
+
+/* ============================================================
+   EXPLANATION PANEL
+   ============================================================ */
+
+.fox-pilot-explain-summary {
+    font-size: 11px;
+    color: #c084fc;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.fox-pilot-explain-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.fox-pilot-explain-panel::-webkit-scrollbar {
+    width: 3px;
+}
+
+.fox-pilot-explain-panel::-webkit-scrollbar-thumb {
+    background: rgba(173, 216, 255, 0.12);
+    border-radius: 2px;
+}
+
+.fox-pilot-explain-item {
+    padding: 10px 12px;
+    background: rgba(192, 132, 252, 0.04);
+    border: 1px solid rgba(192, 132, 252, 0.08);
+    border-radius: 8px;
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-explain-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--rf-text);
+    margin-bottom: 2px;
+}
+
+.fox-pilot-explain-desc {
+    font-size: 11px;
+    color: var(--rf-text-dim);
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+/* ============================================================
+   TAB RETURN CONFIRMATION
+   ============================================================ */
+
+.fox-pilot-tab-confirm {
+    padding: 12px;
+    background: rgba(251, 191, 36, 0.05);
+    border: 1px solid rgba(251, 191, 36, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-tab-confirm-text {
+    font-size: 13px;
+    color: var(--rf-text);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.fox-pilot-tab-confirm-btns {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+/* ============================================================
+   INPUT HINT
+   ============================================================ */
+
+.fox-pilot-input-hint {
+    display: inline-block;
+    background: rgba(100, 181, 246, 0.08);
+    border: 1px dashed rgba(100, 181, 246, 0.2);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #64b5f6;
+    margin-top: 4px;
+}
+
+/* ============================================================
+   TOOLTIP BUTTONS
+   ============================================================ */
+
+.fox-pilot-tooltip-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    justify-content: flex-end;
+}
+
+.fox-pilot-tooltip-btn-confirm {
+    padding: 5px 12px;
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: 6px;
+    color: var(--rf-success);
+    font-size: 12px;
+    font-family: var(--rf-font);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.fox-pilot-tooltip-btn-confirm:hover {
+    background: rgba(74, 222, 128, 0.22);
+}
+
+.fox-pilot-tooltip-btn-skip {
+    padding: 5px 12px;
+    background: rgba(173, 216, 255, 0.04);
+    border: 1px solid rgba(173, 216, 255, 0.08);
+    border-radius: 6px;
+    color: var(--rf-text-dim);
+    font-size: 12px;
+    font-family: var(--rf-font);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.fox-pilot-tooltip-btn-skip:hover {
+    background: rgba(173, 216, 255, 0.1);
+    color: var(--rf-text-muted);
+}
+
+/* ============================================================
+   Q&A FOLLOW-UP (in tooltip)
+   ============================================================ */
+
+.fox-pilot-qa-area {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(173, 216, 255, 0.06);
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-qa-input-row {
+    display: flex;
+    gap: 6px;
+}
+
+.fox-pilot-qa-input {
+    flex: 1;
+    padding: 6px 10px;
+    background: rgba(173, 216, 255, 0.06);
+    border: 1px solid rgba(173, 216, 255, 0.1);
+    border-radius: 6px;
+    color: var(--rf-text);
+    font-size: 12px;
+    font-family: var(--rf-font);
+    outline: none;
+}
+
+.fox-pilot-qa-input:focus {
+    border-color: rgba(77, 163, 255, 0.3);
+    background: rgba(173, 216, 255, 0.08);
+}
+
+.fox-pilot-qa-input::placeholder {
+    color: var(--rf-text-dim);
+}
+
+.fox-pilot-qa-response {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(77, 163, 255, 0.05);
+    border: 1px solid rgba(77, 163, 255, 0.1);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--rf-text-muted);
+    line-height: 1.5;
+    word-break: keep-all;
+    animation: rfFadeIn 0.3s ease;
+}
+
+.fox-pilot-qa-loading {
+    color: var(--rf-text-dim);
+    font-style: italic;
+}
+
+.fox-pilot-qa-error {
+    color: var(--rf-error);
+    background: rgba(248, 113, 113, 0.05);
+    border-color: rgba(248, 113, 113, 0.1);
+}
+
+/* Wrong-click nudge */
+.fox-pilot-nudge {
+    color: var(--rf-warning);
+    font-size: 11px;
+    margin-top: 6px;
+    animation: rfFadeIn 0.3s ease;
+}
+
+/* ============================================================
+   OBSERVE HIGHLIGHT
+   ============================================================ */
+
+#fox-pilot-highlight.fox-pilot-highlight-observe {
+    border-color: var(--rf-success);
+    box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.15),
+                0 0 16px rgba(74, 222, 128, 0.3);
+    animation: none;
+}
+
+/* ============================================================
+   CANCEL BUTTON
+   ============================================================ */
+
+.fox-pilot-cancel-btn {
+    display: block;
+    width: 100%;
+    padding: 7px 0;
+    margin-top: 8px;
+    background: rgba(248, 113, 113, 0.05);
+    border: 1px solid rgba(248, 113, 113, 0.1);
+    border-radius: 8px;
+    color: var(--rf-error);
+    font-size: 12px;
+    font-family: var(--rf-font);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.fox-pilot-cancel-btn:hover {
+    background: rgba(248, 113, 113, 0.12);
+    border-color: rgba(248, 113, 113, 0.2);
+}
+
+/* ============================================================
+   SCROLL COUNTDOWN
+   ============================================================ */
+
+.fox-pilot-countdown {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--rf-accent);
+    text-align: center;
+    margin: 4px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   FOX CHARACTER
+   ============================================================ */
+
+#fox-pilot-character {
+    transition: none;
+}
+
+#fox-pilot-character canvas {
+    pointer-events: none;
+}
+
+#fox-pilot-character.fox-pilot-thinking {
+    animation: rfBounce 0.6s ease infinite;
+}
+
+@keyframes rfBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.fox-pilot-fallback-fox {
+    animation: rfBreath 3s ease-in-out infinite;
+}
+
+@keyframes rfBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 400px) {
+    #fox-pilot-panel {
+        width: calc(100vw - 20px);
+        right: 10px;
+        top: 10px;
+    }
+}
+
+/* Ensure isolation from host page */
+#fox-pilot-panel *,
+#fox-pilot-tooltip *,
+#fox-pilot-highlight * {
+    box-sizing: border-box;
+}
