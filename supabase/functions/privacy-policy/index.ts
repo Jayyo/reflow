@@ -65,7 +65,7 @@ Deno.serve(() => {
   <p>We may update this policy from time to time. The "Last updated" date at the top will reflect any changes.</p>
 
   <h2>10. Contact</h2>
-  <p>If you have questions about this privacy policy, please contact: <a href="mailto:privacy@example.com">privacy@example.com</a></p>
+  <p>If you have questions about this privacy policy, please open an issue at <a href="https://github.com/Jayyo/reflow/issues">github.com/Jayyo/reflow/issues</a>.</p>
 </body>
 </html>`;
 
